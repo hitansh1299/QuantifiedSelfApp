@@ -10,12 +10,11 @@ class BaseModel(Model):
         database = database
 
 class User(BaseModel):
-    email = TextField(null=False, primary_key=True)
-    name = TextField(null=False)
+    email = TextField(null=True, primary_key=True)
+    name = TextField(null=True)
+    password = TextField(null=True)
     phone = TextField(null=True)
 
     class Meta:
         table_name = 'User'
         
-    
-

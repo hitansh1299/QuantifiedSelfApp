@@ -1,104 +1,262 @@
-<!DOCTYPE html>
-<html>
-
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-    <link href="/auth/static/styles.css" rel="stylesheet" type="text/css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vesper+Libre&display=swap" rel="stylesheet">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="auth/static/styles.css">
 </head>
+<div id="app" v-cloak>
 
-<body>
-    <div id="app">
-        <v-app :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }" :dark="darkTheme" id="inspire">
-            <v-container>
-                <v-layout wrap>
-                    <v-flex sm12 md6 offset-md3>
-                        <v-card elevation="4" light tag="section">
-                            <v-card-title>
-                                <v-layout align-center justify-center>
-                                    <h3 class="headline">
-                                        <: platformName :>
-                                    </h3>
-                                </v-layout>
-                            </v-card-title>
-                            <v-form ref="login_form" v-on:submit.prevent="submit_login">
-                                <v-divider></v-divider>
-                                <v-card-text>
-                                    <p>Sign in with your email and password:</p>
-                                    <v-text-field outline label="Username" type="email" v-model="form.email">
-                                    </v-text-field>
-                                    <v-text-field outline hide-details label="Password" type="password"
-                                        v-model="form.password"></v-text-field>
-
-                                </v-card-text>
-                                <v-divider></v-divider>
-                                <v-card-actions :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
-                                    <v-btn color="info" text>
-                                        Forgot password?
-                                    </v-btn>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="info" :large="$vuetify.breakpoint.smAndUp" onclick="" type="submit">
-                                        <v-icon left>mdi-lock</v-icon>
-                                        Login
-                                    </v-btn>
-                                </v-card-actions>
-                                <v-form />
-                        </v-card>
-                    </v-flex>
-                    <v-flex sm12 md6 offset-md3>
-                        <v-layout align-center justify-space-between>
-                            <p class="caption my-3">
-                            </p>
-                        </v-layout>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-app>
+    <div class="actions">
+        <button :class='[{ active: isDisabled("register") }]' @click.prevent='setComponent("register")'>Register
+        </button>
+        <button :class='[{ active: isDisabled("signin") }]' @click.prevent='setComponent("signin")'>Signin
+        </button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
-        integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        new Vue({
-            el: '#app',
-            vuetify: new Vuetify(),
-            delimiters: ['<:', ':>'],
-            data() {
-                return {
-                    darkTheme: true,
-                    platformName: 'Sustainability Tracker',
-                    form: {
-                        email: null,
-                        password: null
-                    }
-                }
-            },
-            methods: {
-                submit_login: function (args) {
-                    console.log("submitting")
-                    axios.post("/auth", {
-                        'username': this.form.email,
-                        'password': this.form.password
-                    },
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                            }
-                        }
-                    )
+    <transition name='form' mode='out-in'>
+        <keep-alive>
+            <component :feedback='feedback' :is="currentComponent" @register-form='handleForm'
+                @signin-form='handleForm'></component>
+        </keep-alive>
+    </transition>
+
+</div>
+
+<!-- Register Template -->
+<template id="registerTemplate">
+    <form @submit.prevent='onSubmit' ref='form' action="" class='register-form'>
+        <h2>Register</h2>
+        <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input required type="text" v-model.trim='user.firstname' id='firstname' placeholder="First Name">
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input required type="text" v-model.trim='user.lastname' id='lastname' placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input required type="email" v-model.trim='user.email' id='email' placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input required type="password" v-model='user.password' placeholder="password" id='password'>
+        </div>
+        <div class="form-group">
+            <label for="passwordcheck"> Confirm password</label>
+            <input required type="password" v-model='user.passwordChck' placeholder="Confirm password"
+                id='passwordcheck'>
+        </div>
+        <input type="submit" :disabled='!isFormValid' value='Register'>
+    </form>
+</template>
+
+<!-- Signin Template -->
+<template id="signinTemplate">
+    <form ref='form' @submit.prevent='handleForm' action="" class='signin-form'>
+        <h2>Signin</h2>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input required v-model='user.email' type="email" id='email' placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="password">password</label>
+            <input required v-model='user.password' type="password" id='password' placeholder="password">
+        </div>
+        <input :disabled='!isFormValid' type="submit" value="Signin">
+    </form>
+</template>
+
+<!-- Feedback Template -->
+<template id="feedbackTemplate">
+    <div class="feedback">
+        <header>
+            <h2>
+                <: title :>
+            </h2>
+        </header>
+        <div v-if='feedback.type === "register"'>
+            <p>Bienvenue <strong>
+                    <: feedback.data | name :>
+                </strong>.</p>
+            <p> Un email vient d'être envoyé à l'adresse <: feedback.data | email :> afin de compléter ton inscription.
+            </p>
+        </div>
+        <div v-else>
+            <p>Vous allez être redirigé(e) dans quelques instants...</p>
+        </div>
+    </div>
+</template>
+
+<script>
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+    const registerComponent = {
+        template: '#registerTemplate',
+        name: 'RegisterComponent',
+        data() {
+            return {
+                user: {
+                    firstname: '',
+                    lastname: '',
+                    email: '',
+                    password: '',
+                    passwordChck: ''
                 }
             }
-        })
-    </script>
-</body>
+        },
+        computed: {
+            isFormValid() {
+                return (
+                    this.isValid('firstname') &&
+                    this.isValid('lastname') &&
+                    this.isValid('email') &&
+                    this.isValid('password') &&
+                    this.isValid('passwordChck')
+                )
+            }
+        },
+        methods: {
+            isValid(prop) {
+                switch (prop) {
+                    case 'firstname':
+                        return this.user.firstname.length >= 2
+                        break
+                    case 'lastname':
+                        return this.user.lastname.length >= 2
+                        break
+                    case 'email':
+                        return emailRegex.test(this.user.email)
+                        break
+                    case 'password':
+                        return this.user.password.length >= 6
+                        break
+                    case "passwordChck":
+                        return this.user.password === this.user.passwordChck
+                        break
+                    default:
+                        return false
+                }
+            },
+            resetUser() {
+                this.user.firstname = ''
+                this.user.lastname = ''
+                this.user.email = ''
+                this.user.password = ''
+                this.user.passwordChck = ''
+            },
+            onSubmit() {
+                let user = Object.assign({}, this.user)
+                this.resetUser()
+                this.$emit('register-form', { type: 'register', data: user })
+            }
+        },
+        mounted() {
+            let element = this.$el.querySelector('#passwordcheck')
+            element.addEventListener('blur', () => {
+                if (!this.isValid('passwordChck')) {
+                    element.classList.add('invalid')
+                } else {
+                    element.classList.remove('invalid')
+                }
+            })
+        }
+    }
 
-</html>
+    const signInComponent = {
+        template: '#signinTemplate',
+        name: 'SigninComponent',
+        data() {
+            return {
+                user: {
+                    email: '',
+                    password: ''
+                }
+            }
+        },
+        methods: {
+            handleForm() {
+                let formvalue = Object.assign({}, this.user)
+                this.resetFormValues()
+                this.$emit('signin-form', { type: 'signin', data: formvalue })
+            },
+            resetFormValues() {
+                this.user.email = ''
+                this.user.password = ''
+            },
+            isValid(prop) {
+                switch (prop) {
+                    case 'email':
+                        return emailRegex.test(this.user.email)
+                        break
+                    case 'password':
+                        return this.user.password.length >= 6
+                        break
+                    default:
+                        return false
+                }
+            },
+        },
+        computed: {
+            isFormValid() {
+                return (this.isValid('email') && this.isValid('password'))
+            }
+        }
+    }
+
+    const feedbackComponent = {
+        template: '#feedbackTemplate',
+        name: "FeedbackComponent",
+        filters: {
+            email(input) {
+                if (input.email) {
+                    return input.email
+                } else {
+                    return ''
+                }
+            },
+            name(input) {
+                return input.firstname ? input.firstname : ''
+            }
+        },
+        data() { return {} },
+        props: ['feedback'],
+        computed: {
+            title() {
+                return this.feedback.type === 'signin' ?
+                    'Authentification effectuée' : 'Inscription'
+            }
+        }
+    }
+
+    const app = new Vue({
+        el: '#app',
+        delimiters: ['<:', ':>'],
+        components: {
+            register: registerComponent,
+            signin: signInComponent,
+            feedback: feedbackComponent
+        },
+        name: 'application',
+        data() {
+            return {
+                feedback: {},
+                currentComponent: 'register'
+            }
+        },
+        methods: {
+            handleForm(data) {
+                this.feedback = data
+                setTimeout(() => {
+                    this.setComponent('feedback')
+                }, 280)
+            },
+            isDisabled(btnName) {
+                return (this.currentComponent === btnName)
+            },
+            setComponent(componentName) {
+                if (this.currentComponent !== componentName) {
+                    this.currentComponent = componentName
+                }
+            }
+        }
+    })
+</script>

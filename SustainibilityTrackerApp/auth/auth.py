@@ -19,8 +19,12 @@ def identify(email):
     return User.get_by_id(email).name
 
 def authenticate_user(email: str, password: str):
-    
     user = User.get_or_none(User.email == email) 
     print(user.email, user.password)
     if bcrypt.checkpw(user.password, password):
         return user
+
+@auth.route('/signup', methods=['POST'])
+def sign_up():
+    print(request.get_json())
+    return None
