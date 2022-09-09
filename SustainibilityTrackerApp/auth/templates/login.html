@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link href="/auth/static/styles.css" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vesper+Libre&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <div id="app">
+        <v-app :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }" :dark="darkTheme" id="inspire">
+            <v-container>
+                <v-layout wrap>
+                    <v-flex sm12 md6 offset-md3>
+                        <v-card elevation="4" light tag="section">
+                            <v-card-title>
+                                <v-layout align-center justify-center>
+                                    <h3 class="headline">
+                                        <: platformName :>
+                                    </h3>
+                                </v-layout>
+                            </v-card-title>
+                            <v-form ref="login_form" v-on:submit.prevent="submit_login">
+                                <v-divider></v-divider>
+                                <v-card-text>
+                                    <p>Sign in with your email and password:</p>
+                                    <v-text-field outline label="Username" type="email" v-model="form.email">
+                                    </v-text-field>
+                                    <v-text-field outline hide-details label="Password" type="password"
+                                        v-model="form.password"></v-text-field>
+
+                                </v-card-text>
+                                <v-divider></v-divider>
+                                <v-card-actions :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
+                                    <v-btn color="info" text>
+                                        Forgot password?
+                                    </v-btn>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="info" :large="$vuetify.breakpoint.smAndUp" onclick="" type="submit">
+                                        <v-icon left>mdi-lock</v-icon>
+                                        Login
+                                    </v-btn>
+                                </v-card-actions>
+                                <v-form />
+                        </v-card>
+                    </v-flex>
+                    <v-flex sm12 md6 offset-md3>
+                        <v-layout align-center justify-space-between>
+                            <p class="caption my-3">
+                            </p>
+                        </v-layout>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+        integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            delimiters: ['<:', ':>'],
+            data() {
+                return {
+                    darkTheme: true,
+                    platformName: 'Sustainability Tracker',
+                    form: {
+                        email: null,
+                        password: null
+                    }
+                }
+            },
+            methods: {
+                submit_login: function (args) {
+                    console.log("submitting")
+                    axios.post("/auth", {
+                        'username': this.form.email,
+                        'password': this.form.password
+                    },
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        }
+                    )
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

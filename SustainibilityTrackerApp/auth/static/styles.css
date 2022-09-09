@@ -1,0 +1,13 @@
+.v-btn,
+.v-card {
+  border-radius: 4px;
+}
+.v-card__title {
+  text-transform: uppercase;
+}
+h3.headline {
+  text-align: center;
+  color: darkslateblue;
+  /* width: 100%; */
+  font-family: 'Vesper Libre', serif;
+}
