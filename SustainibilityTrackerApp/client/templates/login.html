@@ -1,6 +1,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
-    <link rel="stylesheet" type="text/css" href="auth/static/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('client.static', filename='styles.css')}}">
 </head>
 <div id="app" v-cloak>
 
@@ -174,6 +175,14 @@
         },
         methods: {
             handleForm() {
+                axios.post("/auth", {
+                    'username': this.user.email,
+                    'password': this.user.password
+                }).then(response => {
+                    axios.get()
+                    console.log(response)
+                });
+
                 let formvalue = Object.assign({}, this.user)
                 this.resetFormValues()
                 this.$emit('signin-form', { type: 'signin', data: formvalue })
@@ -187,7 +196,7 @@
                     case 'email':
                         return emailRegex.test(this.user.email)
                         break
-                    case 'password':
+                    case 'password': 
                         return this.user.password.length >= 6
                         break
                     default:
@@ -235,7 +244,7 @@
             signin: signInComponent,
             feedback: feedbackComponent
         },
-        name: 'application',
+        name: 'SustainabilityTracker    ',
         data() {
             return {
                 feedback: {},

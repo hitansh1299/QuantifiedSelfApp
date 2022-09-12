@@ -5,24 +5,23 @@ from Database.models import User
 
 auth = Blueprint(
     'auth_bp', 
-    __name__,
-    template_folder='templates',    
-    static_folder='static',
-    static_url_path='/auth/static'
+    __name__
 )
-
-@auth.route('/')
-def land():
-    return render_template('login.html')
 
 def identify(email):
     return User.get_by_id(email).name
 
 def authenticate_user(email: str, password: str):
     user = User.get_or_none(User.email == email) 
-    print(user.email, user.password)
-    if bcrypt.checkpw(user.password, password):
+    # print(user.email, user.password)
+    # print(str(user.password))
+    if bcrypt.checkpw(password.encode('utf-8'), str(user.password).encode('utf-8')):
+        user.__setattr__('id',user.email)
         return user
+
+'''
+/login is handled by Flask JWT
+'''
 
 @auth.route('/signup', methods=['POST'])
 def sign_up():
