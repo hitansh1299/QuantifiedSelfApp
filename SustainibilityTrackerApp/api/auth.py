@@ -1,6 +1,6 @@
 import bcrypt
 import json
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, jsonify
 from Database.models import User
 
 auth = Blueprint(
@@ -23,7 +23,10 @@ def authenticate_user(email: str, password: str):
 /login is handled by Flask JWT
 '''
 
-@auth.route('/signup', methods=['POST'])
-def sign_up():
-    print(request.get_json())
-    return None
+@auth.route('/register', methods=['POST'])
+def register():
+    user = request.get_json()['user']
+    print(user)
+    print(user['firstname'])
+    User.insert()
+    return jsonify({"USER":"REGISTERED"})

@@ -1,5 +1,5 @@
-from pydoc import cli
-from flask import Blueprint, render_template
+from flask_jwt import jwt_required
+from flask import Blueprint, render_template, jsonify
 client = Blueprint(
     "client",
     __name__,
@@ -11,3 +11,8 @@ client = Blueprint(
 @client.route('/')
 def index():
     return render_template('login.html')
+
+@jwt_required
+@client.route('/protectedEndpoint')
+def dummy():
+    return jsonify({"HELLO":"WORLD!"})
