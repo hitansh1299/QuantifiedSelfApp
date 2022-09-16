@@ -28,5 +28,13 @@ def register():
     user = request.get_json()['user']
     print(user)
     print(user['firstname'])
-    User.insert()
+    try:
+        User.create(
+            name=user['firstname'],
+            email=user['email'],
+            phone="",
+            password=bcrypt.hashpw(user['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        )
+    except:
+        pass
     return jsonify({"USER":"REGISTERED"})
