@@ -1,3 +1,4 @@
+import {signin} from './utils.js'
 const registerTemplate = `
 <form @submit.prevent='onSubmit' ref='form' action="" class='register-form'>
     <h2>Register</h2>
@@ -81,6 +82,7 @@ export default {
                 'user' : this.user
             }).then(res => {
                 console.log('profile is:', res.data);
+                signin(this.user.email, this.user.password)
             }).catch(rej => {});
         }
     },

@@ -26,17 +26,16 @@ const template = `
         <button :class='[{ active: isDisabled("signin") }]' @click.prevent='setComponent("signin")'>Sign In
         </button>
     </div>
-
-    <transition name='form' mode='out-in'>
-        <keep-alive>
-            <component :feedback='feedback' :is="currentComponent" @register-form='handleForm'
-                @signin-form='handleForm'></component>
-        </keep-alive>
-    </transition>
+        <transition name='form' mode='out-in'>
+            <keep-alive>
+                <component :feedback='feedback' :is="currentComponent" @register-form='handleForm'
+                    @signin-form='handleForm'></component>
+            </keep-alive>
+        </transition>
 </div>
 `
 
-export default{
+export default {
     template: template,
     name: "login",
     components: {

@@ -1,3 +1,4 @@
+import {signin} from './utils.js'
 const signinTemplate =`
     <form ref='form' @submit.prevent='handleForm' action="" class='signin-form'>
         <h2>Signin</h2>
@@ -27,23 +28,7 @@ export default {
     },
     methods: {
         handleForm() {
-            axios.post("/auth/login", {
-                'username': this.user.email,
-                'password': this.user.password
-            }).then(response => {
-                axios.get()
-                console.log(response)
-                $cookies.set('access_token',response['data']['access_token'])
-                console.log($cookies.get('access_token'))
-
-                axios
-                .get('/protectedEndpoint', { headers: {"Authorization" : 'Bearer ${$cookies.get("access_token")}'} })
-                .then(res => {
-                   console.log('profile is:', res.data);
-                  })
-                  .catch(error => console.log(error)) 
-            }).catch(reject => console.log(reject));
-
+            signin(this.user.email, this.user.password)
             let formvalue = Object.assign({}, this.user)
             this.resetFormValues()
             this.$emit('signin-form', { type: 'signin', data: formvalue })
