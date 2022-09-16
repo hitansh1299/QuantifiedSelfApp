@@ -1,5 +1,6 @@
 import login_component from './components/login_page/login.js'; 
 
+
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
     routes: [

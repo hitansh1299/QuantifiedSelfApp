@@ -2,12 +2,8 @@ const registerTemplate = `
 <form @submit.prevent='onSubmit' ref='form' action="" class='register-form'>
     <h2>Register</h2>
     <div class="form-group">
-        <label for="firstname">First Name</label>
-        <input required type="text" v-model.trim='user.firstname' id='firstname' placeholder="First Name">
-    </div>
-    <div class="form-group">
-        <label for="lastname">Last Name</label>
-        <input required type="text" v-model.trim='user.lastname' id='lastname' placeholder="Last Name">
+        <label for="firstname">Name</label>
+        <input required type="text" v-model.trim='user.firstname' id='firstname' placeholder="Name">
     </div>
     <div class="form-group">
         <label for="email">Email</label>
@@ -37,7 +33,6 @@ export default {
         return {
             user: {
                 firstname: '',
-                lastname: '',
                 email: '',
                 password: '',
                 passwordChck: ''
@@ -48,7 +43,6 @@ export default {
         isFormValid() {
             return (
                 this.isValid('firstname') &&
-                this.isValid('lastname') &&
                 this.isValid('email') &&
                 this.isValid('password') &&
                 this.isValid('passwordChck')
@@ -60,9 +54,6 @@ export default {
             switch (prop) {
                 case 'firstname':
                     return this.user.firstname.length >= 2
-                    break
-                case 'lastname':
-                    return this.user.lastname.length >= 2
                     break
                 case 'email':
                     return emailRegex.test(this.user.email)
@@ -79,7 +70,6 @@ export default {
         },
         resetUser() {
             this.user.firstname = ''
-            this.user.lastname = ''
             this.user.email = ''
             this.user.password = ''
             this.user.passwordChck = ''
