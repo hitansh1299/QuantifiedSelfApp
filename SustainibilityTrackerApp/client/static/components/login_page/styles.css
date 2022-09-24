@@ -15,7 +15,7 @@
 	 font-family: 'PT Sans', sans-serif;
 	 background: #e0e0e0;
 }
- #app {
+ .loginPage {
 	 border-top: 0.5em solid var(--brandColor);
 	 max-width: 800px;
 	 margin: 0 auto;

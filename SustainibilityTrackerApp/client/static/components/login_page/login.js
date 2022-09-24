@@ -19,7 +19,7 @@ import SigninComponent from './signin.js';
 // </div>
 // `
 const template = `
-<div>
+<div class='loginPage'>
     <div class="actions">
         <button :class='[{ active: isDisabled("register") }]' @click.prevent='setComponent("register")'>Register
         </button>

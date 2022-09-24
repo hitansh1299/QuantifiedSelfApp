@@ -5,7 +5,7 @@ client = Blueprint(
     __name__,
     static_folder="./static",
     static_url_path="/client/static",
-    template_folder=r"templates"
+    template_folder="templates"
 )
 
 @client.route('/')

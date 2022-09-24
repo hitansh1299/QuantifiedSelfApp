@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_jwt import JWT
 from api.auth import auth, identify, authenticate_user
 from client.client import client
-from dashboard.dashboard import dash
+
 from flask_peewee.db import Database
 from Database.db import print_users, get_user_by_email
 
@@ -11,7 +11,7 @@ static_url_path='/client')
 app.config['JWT_AUTH_URL_RULE'] = '/auth/login' #change the default JWT token giver to /auth/login
 app.register_blueprint(client)
 app.register_blueprint(auth, url_prefix='/auth')
-app.register_blueprint(dash,url_prefix='/dashboard')
+
     
 # app.config['EXPLAIN_TEMPLATE_LOADING'] = True
 
