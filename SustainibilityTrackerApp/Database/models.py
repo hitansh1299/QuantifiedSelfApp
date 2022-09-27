@@ -10,6 +10,7 @@ class BaseModel(Model):
         database = database
 
 class Tracker(BaseModel):
+    last_updated = TextField(null=True)
     tracker = TextField()
     user = TextField()
 

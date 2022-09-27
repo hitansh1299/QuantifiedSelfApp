@@ -1,6 +1,7 @@
 import Sidebar from "../common/Sidebar.js";
 import Header from "../common/Header.js";
 import {complete} from "./complete.js"
+import { router } from "../../main.js";
 const template = `
 <div className="flex h-screen bg-gray-200 font-roboto">
     <Sidebar />
@@ -16,7 +17,7 @@ const template = `
                         <flow-form v-bind:progressbar="true" v-bind:standalone="true" ref='flowform' v-bind:questions='questions'>
                           <template v-slot:complete>
                           <p>
-                            <span class="fh2">Create Tracker?</span>
+                            <span class="fh2">Confirm Tracker Creation</span>
                             <span v-if="!submitted" class="f-section-text">
                                 You can verify the tracker details
                             </span>
@@ -32,7 +33,7 @@ const template = `
                               href="#"
                               v-on:click.prevent="createTracker()"
                               aria-label="Press to submit">
-                              <span>Calculate score</span>
+                              <span>Create Tracker</span>
                             </button>
                             <a 
                               class="f-enter-desc"
@@ -40,7 +41,6 @@ const template = `
                               v-on:click.prevent="createTracker()">
                             </a>
                           </div>
-                          <p class="text-success">Tracker Created!</p>
                         </template>
                         </flow-form>
                            
@@ -55,7 +55,7 @@ const template = `
 
 `
 const trackerType = new VueFlowForm.QuestionModel({
-    id: 'type',
+    id: 'tracker_type',
     title: 'What is the type of value to be tracked?',
     helpText: '',
     type: VueFlowForm.QuestionType.MultipleChoice,
@@ -80,13 +80,13 @@ const trackerType = new VueFlowForm.QuestionModel({
       })
     ],
     jump: {
-      choice: 'choice',
-      _other: 'desc'
+      choice: 'choices',
+      _other: 'tracker_description'
     }
   })
 
 const trackerName = new VueFlowForm.QuestionModel({
-    id: 'name',
+    id: 'tracker_name',
     title: 'Please name your Tracker',
     helpText: 'What would you like to name your tracker, this will be displayed on your home screen',
     type: VueFlowForm.QuestionType.Text,
@@ -96,7 +96,7 @@ const trackerName = new VueFlowForm.QuestionModel({
   })
 
 const description = new VueFlowForm.QuestionModel({
-  id: 'desc',
+  id: 'tracker_description',
   title: 'Please provide description for the tracker',
   helpText: 'What would you like to name your tracker, this will be displayed on your home screen',
   type: VueFlowForm.QuestionType.Text,
@@ -106,7 +106,7 @@ const description = new VueFlowForm.QuestionModel({
 })
 
 const choice = new VueFlowForm.QuestionModel({
-    id: 'choice',
+    id: 'choices',
     title: 'Please enter choices',
     helpText: 'Please enter choices to be asked, each on a different line (Shift + Enter)',
     type: VueFlowForm.QuestionType.LongText,
@@ -153,13 +153,23 @@ export default{
               Authorization: 'JWT '+ $cookies.get("access_token")
             }
           }
-        )
+        ).finally(() => {
+          this.submitted = false 
+          this.questions.forEach(q => {
+            q.answer = null
+          })
+          router.push('/dashboard')
+        })
       },
       getData() {
         var data = {}
         this.questions.forEach(question => {
             data[question.id] = question.answer
         })
+        if (data['choice'] != null){
+            data['choice'] = data['choice'].split(/\r?\n/)
+        }
+
         return data
       }
     }
