@@ -1,10 +1,10 @@
 const template = `
   <div>
-    <h3 class="text-3xl font-medium text-gray-700">Dashboard</h3>
+    <h3 class="text-3xl font-medium text-white">Dashboard</h3>
 
-    <div class="mt-4">
+    <div class="mt-4 text-white" >
       <div class="flex flex-wrap -mx-6">
-        <div class="w-full px-6 sm:w-1/2 xl:w-full">
+        <div class="w-full px-6 sm:w-1/2 xl:w-1/3">
           <div
             class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm"
           >

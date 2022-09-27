@@ -1,5 +1,7 @@
-from flask_jwt import jwt_required
-from flask import Blueprint, render_template, jsonify
+from flask_jwt import jwt_required, current_identity
+import json
+from flask import Blueprint, render_template, jsonify, request, Response
+from Database.db import createNewTracker
 client = Blueprint(
     "client",
     __name__,
@@ -10,9 +12,12 @@ client = Blueprint(
 
 @client.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('index.html')
 
-@jwt_required
-@client.route('/protectedEndpoint')
-def dummy():
-    return jsonify({"HELLO":"WORLD!"})
+@client.route('/tracker/add',methods=['POST'])
+@jwt_required()
+def addTracker():
+    data = request.get_json(force=True)['data']
+    print('Identity',current_identity)
+    createNewTracker(str(current_identity), str(json.dumps(data)))
+    return jsonify({'status':200})

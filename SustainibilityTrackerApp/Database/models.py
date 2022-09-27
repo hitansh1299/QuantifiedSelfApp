@@ -9,11 +9,26 @@ class BaseModel(Model):
     class Meta:
         database = database
 
+class Tracker(BaseModel):
+    tracker = TextField()
+    user = TextField()
+
+    class Meta:
+        table_name = 'Tracker'
+
 class User(BaseModel):
-    email = TextField(null=True, primary_key=True)
-    name = TextField(null=True)
-    password = TextField(null=True)
+    id = TextField(primary_key=True)
+    name = TextField()
+    password = TextField()
 
     class Meta:
         table_name = 'User'
+
+class SqliteSequence(BaseModel):
+    name = BareField(null=True)
+    seq = BareField(null=True)
+
+    class Meta:
+        table_name = 'sqlite_sequence'
+        primary_key = False
 

@@ -128,7 +128,7 @@ const template = `
         <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
           :class="[$route.name === 'Forms' ? activeClass : inactiveClass]"
-          to="/forms"
+          to="/form"
         >
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path
@@ -197,7 +197,7 @@ const inactiveClass = Vue.ref(
   "border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
 );
 
-import { useSidebar } from "./useSidebar.js";
+import { useSidebar } from "../dashboard/useSidebar.js";
 
 const { isOpen } = useSidebar();
 
