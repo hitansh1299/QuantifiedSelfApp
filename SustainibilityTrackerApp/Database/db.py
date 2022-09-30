@@ -1,9 +1,11 @@
-from inspect import trace
 import json
 from peewee import *
 from Database.models import User
 from Database.models import Tracker
 from Database.models import Logs
+from Database.models import Database
+from playhouse.dataset import DataSet
+
 
 def print_users():
     print([x for x in User.select()])
@@ -62,3 +64,13 @@ def _editNote(id, new_note):
 def _deleteLog(id):
     print('Deleting Log: ')
     Logs.delete().where(Logs.id == id).execute()
+
+def getCSV(tracker_id):
+    q = Logs.select(Logs.datetime, Logs.value, Logs.note).where(Logs.tracker == tracker_id)
+    print(q.tuples())
+    DataSet(r'sqlite:///SustainibilityTrackerApp\Database\database.db').freeze(q, format='csv', filename='logs.csv')
+    with open("logs.csv") as fp:
+        return fp.read()
+
+def _deleteTracker(tracker_id):
+    Tracker.delete().where(Tracker.id == tracker_id).execute()

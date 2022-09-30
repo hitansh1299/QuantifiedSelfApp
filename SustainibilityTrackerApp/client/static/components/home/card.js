@@ -18,17 +18,17 @@ const template = `
             {{tracker_desc}} 
         </p>
     </div>
+    </router-link>
     <div class="px-6 pt-4 pb-2 flex items-stretch justify-between">
         <span
         class="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200" >
             Last updated: {{last_edited || 'Never'}} 
         </span>
         <div class="flex justify-around">
-            <i class="fas fa-trash text-sm font-semibold"></i> 
-            <i class="fas fa-pen text-sm font-semibold"></i>
+            <i class="fas fa-trash text-sm font-semibold text-red-600" @click='deleteTracker(this.tracker_id)'></i> 
         </div>
     </div>
-    </router-link>
+    
 </div>
 `
 
@@ -59,5 +59,15 @@ export default{
     },
     mounted(){
         console.log('Cards'+this.last_edited)
+    },
+    methods: {
+        deleteTracker(id){
+            axios.delete(`/tracker/${id}`,
+            {
+            headers: {
+                Authorization: 'JWT '+ $cookies.get("access_token")
+            }
+            }).then(res => {this.$router.go()})
+        }
     }
 }

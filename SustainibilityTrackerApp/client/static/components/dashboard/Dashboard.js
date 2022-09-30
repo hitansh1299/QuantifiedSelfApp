@@ -16,14 +16,24 @@ const template = `
       :tracker_choices='this.tracker_choices'
       @click='this.$forceUpdate()'
       />
+      <button
+      class="px-6 py-3 mt-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
+      @click="getCSV(this.tracker_id)"
+      >
+      Download as CSV
+    </button>
     </div>
       <div class="flex flex-wrap ">
         <div class="w-full px-6">
           <div
             class="flex px-5 py-6 rounded-md shadow-sm"
           >
-            <div class="w-1/2">
-              <chart/>
+            <div class="w-full">
+              <chart
+                :id='this.tracker_id'
+                :type='this.tracker_type'
+                :title='this.tracker_name'
+              />
             </div>
           </div>
         </div>
@@ -64,13 +74,10 @@ const template = `
                 <td
                   class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
                 > 
-
                     <editTime 
                     :id='u.id'
                     :datetime='u.datetime'
-                    />
-                        
-
+                    />   
                 </td>
 
                 <td
@@ -149,13 +156,28 @@ export default{
   },
   methods: {
     deleteLog(id){
-      console.log
       axios.delete(`/tracker/log/${id}`,
       {
         headers: {
           Authorization: 'JWT '+ $cookies.get("access_token")
         }
-      }).then(res => {this.$router.go()})
+      }).then(res => {this.$router.go()});
+    },
+    getCSV(id){
+      axios.get(`/tracker/getCSV/${id}`,
+      {
+        responseType:'blob',
+        headers: {
+          Authorization: 'JWT '+ $cookies.get("access_token")
+        }
+      }).then(res => {
+        const blob = new Blob([res.data], { type: 'text/csv' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = 'log.csv'
+        link.click()
+        URL.revokeObjectURL(link.href)
+      });
     }
   }
 

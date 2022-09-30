@@ -57,7 +57,7 @@ class="modal z-50 fixed w-full h-full top-0 left-0 flex items-center justify-cen
             <!--Footer-->
          </div>
       </div>
-      <div class="flex items-center @dblclick='openDate = true'">
+      <div class="flex items-center"  @dblclick='openDate = true'>
                     <div class="ml-4">
                       <div class="text-sm font-medium leading-5 text-gray-900">
         <div >

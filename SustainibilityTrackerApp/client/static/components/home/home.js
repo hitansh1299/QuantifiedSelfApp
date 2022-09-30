@@ -55,7 +55,7 @@ export default{
       }
     },
     methods:{
-      getTrackers(){
+      deleteTracker(id){
         
       }
     },
