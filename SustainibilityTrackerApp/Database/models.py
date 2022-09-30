@@ -9,6 +9,15 @@ class BaseModel(Model):
     class Meta:
         database = database
 
+class Logs(BaseModel):
+    datetime = TextField()
+    note = TextField(null=True)
+    tracker = IntegerField()
+    value = TextField()
+
+    class Meta:
+        table_name = 'Logs'
+
 class Tracker(BaseModel):
     last_updated = TextField(null=True)
     tracker = TextField()

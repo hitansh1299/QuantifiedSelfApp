@@ -8,7 +8,7 @@ export const signin = function(email, password){
         console.log(response)
         $cookies.set('access_token',response['data']['access_token'])
         console.log($cookies.get('access_token'))
-        router.push('/dashboard')
+        router.push('/home')
         
     }).catch(reject => console.log(reject));
 }

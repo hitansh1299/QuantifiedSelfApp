@@ -77,6 +77,10 @@ const trackerType = new VueFlowForm.QuestionModel({
       new VueFlowForm.ChoiceOption({
         label: 'Boolean', 
         value: 'bool'
+      }),
+      new VueFlowForm.ChoiceOption({
+        label: 'Duration', 
+        value: 'duration'
       })
     ],
     jump: {
@@ -98,10 +102,10 @@ const trackerName = new VueFlowForm.QuestionModel({
 const description = new VueFlowForm.QuestionModel({
   id: 'tracker_description',
   title: 'Please provide description for the tracker',
-  helpText: 'What would you like to name your tracker, this will be displayed on your home screen',
+  helpText: 'This is the question that will be asked to you when loading tracking',
   type: VueFlowForm.QuestionType.Text,
   required: true,
-  placeholder: "Name for your tracker"
+  placeholder: "Tracker question"
 
 })
 
@@ -146,7 +150,7 @@ export default{
         this.$refs.flowform.submitted = true
         this.submitted = true
         console.log(this.getData())
-        axios.post('/tracker/add',
+        axios.post('/tracker/',
           {data: this.getData()},
           {
             headers:{
@@ -158,7 +162,7 @@ export default{
           this.questions.forEach(q => {
             q.answer = null
           })
-          router.push('/dashboard')
+          router.push('/home')
         })
       },
       getData() {

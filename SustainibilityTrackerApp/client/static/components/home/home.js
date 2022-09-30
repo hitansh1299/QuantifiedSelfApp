@@ -23,9 +23,12 @@ const template = `
                           <card 
                           v-if="!this.trackersLoading"
                           v-for="tracker in this.trackers" 
-                          :description='tracker["tracker_description"]' 
+                          :tracker_desc='tracker["tracker_description"]' 
                           :tracker_type='tracker.tracker_type'
                           :tracker_name='tracker.tracker_name'
+                          :tracker_id='tracker.id'
+                          :tracker_choices='tracker.choices'
+                          :last_edited='tracker.last_updated'
                           />
                       </div>  
                     </div>
@@ -57,7 +60,7 @@ export default{
       }
     },
     beforeMount(){
-      axios.get('/tracker/get', {
+      axios.get('/tracker/', {
         headers: {
           Authorization: 'JWT '+ $cookies.get("access_token")
         }

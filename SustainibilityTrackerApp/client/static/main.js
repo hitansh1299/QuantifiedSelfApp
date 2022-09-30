@@ -12,15 +12,21 @@ export const router = VueRouter.createRouter({
         component: login_component
         },
         {
-            path: '/dashboard',
-            name: 'dashboard',
+            path: '/home',
+            name: 'home',
             component: home
         },
         {
             path: '/form',
             name: 'form',
             component: form
+        },
+        {
+            path: '/dashboard',
+            name: 'dashboard',
+            component: dashboard
         }
+
     ]
 });
 

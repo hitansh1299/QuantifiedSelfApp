@@ -44,7 +44,7 @@ const template = `
         <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
           :class="[$route.name === 'Dashboard' ? activeClass : inactiveClass]"
-          to="/dashboard"
+          to="/home"
         >
           <svg
             class="w-5 h-5"
@@ -62,7 +62,7 @@ const template = `
             />
           </svg>
 
-          <span class="mx-4">Dashboard</span>
+          <span class="mx-4">Home</span>
         </router-link>
 
         <router-link
@@ -94,7 +94,7 @@ const template = `
             />
           </svg>
 
-          <span class="mx-4">UI Elements</span>
+          <span class="mx-4">Into The World!</span>
         </router-link>
 
         <router-link

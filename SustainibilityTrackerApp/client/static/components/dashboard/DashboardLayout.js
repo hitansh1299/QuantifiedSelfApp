@@ -1,6 +1,7 @@
 import Sidebar from "../common/Sidebar.js";
 import Header from "../common/Header.js";
 import Dashboard from "./Dashboard.js";
+
 const template = `
   <div className="flex h-screen bg-gray-600 font-roboto text-white">
     <Sidebar />
