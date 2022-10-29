@@ -7,22 +7,22 @@ const template = `
     <h3 class="text-3xl font-medium text-white">{{this.tracker_name}}</h3>
 
     <div class="mt-4 text-white" >
-    <div class="pb-10">
-      <log
-      :tracker_id='this.tracker_id'
-      :tracker_type='this.tracker_type'
-      :tracker_name='this.tracker_name'
-      :tracker_desc='this.tracker_desc'
-      :tracker_choices='this.tracker_choices'
-      @click='this.$forceUpdate()'
-      />
-      <button
-      class="px-6 py-3 mt-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
-      @click="getCSV(this.tracker_id)"
-      >
-      Download as CSV
-    </button>
-    </div>
+      <div class="pb-10">
+        <log
+        :tracker_id='this.tracker_id'
+        :tracker_type='this.tracker_type'
+        :tracker_name='this.tracker_name'
+        :tracker_desc='this.tracker_desc'
+        :tracker_choices='this.tracker_choices'
+        @click='this.$forceUpdate()'
+        />
+        <button
+        class="px-6 py-3 mt-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
+        @click="getCSV(this.tracker_id)"
+        >
+        Download as CSV
+      </button>
+      </div>
       <div class="flex flex-wrap ">
         <div class="w-full px-6">
           <div
@@ -177,6 +177,7 @@ export default{
         link.download = 'log.csv'
         link.click()
         URL.revokeObjectURL(link.href)
+        // alert('Your CSV file will be sent to your email');
       });
     }
   }

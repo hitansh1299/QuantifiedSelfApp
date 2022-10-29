@@ -33,8 +33,6 @@ const template = `
           @click="dropdownOpen = !dropdownOpen"
           class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"
         >
-        <img src="https://www.flaticon.com/free-icon/user_456212?term=avatar&page=1&position=7&page=1&position=7&related_id=456212&origin=tag"/>
-
         </button>
 
         <div

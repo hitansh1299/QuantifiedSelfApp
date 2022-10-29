@@ -1,0 +1,65 @@
+<html><head><link rel="stylesheet" href="client/static/components/form/common.css">
+    <!-- Optional theme.css -->
+    <link rel="stylesheet" type="text/css" href="client/static/components/form/green_theme.css">
+    <!-- Optional font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;900&amp;display=swap">
+    <script src="https://kit.fontawesome.com/0eab3f28b6.js" crossorigin="anonymous"></script><style media="all" id="fa-v4-font-face"></style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    </head><body><main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-600">
+        <div class="container mx-auto px-6 py-8">
+            <div>
+                <h3 class="text-3xl font-medium text-white">Fruit Tracker</h3>
+                <div class="mt-4 text-white">
+                    <div class="flex flex-wrap">
+                        <div class="w-full px-6">
+                            <div class="flex px-5 py-6 rounded-md shadow-sm">
+                                <div class="w-full">
+                                    <div class="relative shadow-lg rounded-lg overflow-hidden w-auto">
+                                        <div class="py-3 px-5 bg-gray-50 w-full text-emerald-600">Line chart</div><canvas class="p-10 bg-white" id="linechart" width="1144" height="571" style="display: block; box-sizing: border-box; height: 571px; width: 1144px;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8"></div>
+                <div class="flex flex-col mt-8">
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+    const labels = {{labels | safe}};
+    
+    const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: "value",
+            maxBarThickness: 40,
+            backgroundColor: "hsl(252, 82.9%, 67.8%)",
+            borderColor: "hsl(252, 82.9%, 67.8%)",
+            data: {{data1 | safe}} ,
+          },
+        ],
+      };
+    
+      const configLineChart = {
+        type: "bar",
+        data,
+        options: {
+            responsive: true
+        },
+      };
+    
+      var chartLine = new Chart(
+        "linechart",
+        configLineChart
+      );
+    </script>
+    </body>
+    
+    </html>

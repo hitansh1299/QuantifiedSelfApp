@@ -63,7 +63,7 @@ export default {
               this.chartLine = new Chart(
                 "linechart",
                 {
-                  type: "bar",
+                  type: "pie",
                   data: {
                     labels: res.data.x,
                     datasets: [

@@ -1,12 +1,17 @@
 const template = `
   <div>
-    <button
-      @click="open = true"
-      class="px-6 py-3 mt-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
-    >
-      + New Log
-    </button>
-
+  <div class="flex justify-between items-center">
+    <div>
+      <button
+        @click="open = true"
+        class="px-6 py-3 mt-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
+      >+ New Log</button>
+    </div>
+    <div>
+      <label for="import_logs" class="px-6 py-3 mt-3 font-medium tracking-wide text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none">+Import Logs</label>
+      <input id="import_logs" type="file" class="w-0" accept=".csv" @change="import_logs()"/>
+    </div>
+  </div>
     <div
       v-show="open"
       class="modal z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center"
@@ -97,6 +102,7 @@ export default {
 
         open: false,
         submitted:false,
+        log_file: null,
         questions:[
           value,
           notes
@@ -155,6 +161,21 @@ export default {
         data['datetime'] = new Date().toISOString();
         data['id'] = this.tracker_id
         return data
+      },
+      import_logs(){
+        console.log("Trying to import logs!")
+        console.log(event.target.files[0])
+        let formData = new FormData();
+        formData.append('logs',event.target.files[0])
+
+        axios.post(`/tracker/import/logs/${this.tracker_id}`,
+            formData,
+        {
+          headers:{
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'JWT '+ $cookies.get("access_token")
+          }
+        });
       }
     },
     mounted(){
@@ -163,7 +184,6 @@ export default {
       console.log(this.tracker_type)
       console.log(this.tracker_id)
       switch(this.tracker_type){
-        
         case "text":
           this.questions[0].type  = VueFlowForm.QuestionType.Text;
           break;
@@ -176,12 +196,12 @@ export default {
           this.questions[0].type = VueFlowForm.QuestionType.MultipleChoice;
           this.questions[0]['options'] = [
             new VueFlowForm.ChoiceOption({
-              label: Yes, 
-              value: yes
+              label: 'Yes', 
+              value: 'yes'
             }),
             new VueFlowForm.ChoiceOption({
-              label: No, 
-              value: no
+              label: 'No', 
+              value: 'no'
             })
           ]
           break;
@@ -200,15 +220,29 @@ export default {
           break;
 
         case "duration":
-          this.questions[0] = new VueFlowForm.QuestionModel({
-            id: 'value',
-            title: 'Enter Duration',
-            type: VueFlowForm.QuestionType.Text,
-            mask: '##:##:##',
-            placeholder: 'hh:mm:dd'
-          });
+          // this.questions[0] = new VueFlowForm.QuestionModel({
+          //   title:this.tracker_desc,
+          //   id: 'value',
+          //   type: VueFlowForm.QuestionType.Phone,
+          //   mask: '##:##:##',
+          //   placeholder: 'hh:mm:dd',
+          //   required : true
+          // });
+          this.questions[0].type = VueFlowForm.QuestionType.Text
+          this.questions[0]['mask'] = '##:##:##'
+          this.questions[0]['placeholder'] = 'hh:mm:dd'
           break;
       }
+    },
+    unmount(){
+      this.question[0] = new VueFlowForm.QuestionModel({
+        id: 'value',
+        title: '',
+        helpText: '',
+        type: VueFlowForm.QuestionType.Text,
+        required: true,
+        placeholder: "data"
       
-    }
+      });
+    }     
 }
